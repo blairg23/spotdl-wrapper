@@ -1,0 +1,20 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: local
+    hooks:
+      - id: tox-suite
+        name: run tox suite (format, lint, type, coverage)
+        entry: tox
+        language: python
+        additional_dependencies:
+          - tox>=4.20.0
+        pass_filenames: false
+        args: ["-e", "precommit", "-vv"]
+        verbose: true
