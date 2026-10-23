@@ -1,0 +1,1 @@
+"""spotdl-wrapper package."""

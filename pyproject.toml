@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spotdl-wrapper"
+version = "0.1.0"
+description = "spotdl-wrapper service"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "black>=24.8.0",
+  "mypy>=1.11.0",
+  "pre-commit>=3.8.0",
+  "pytest>=8.0.0",
+  "ruff>=0.6.0",
+  "tox>=4.20.0",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-q -s"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report]
+# Raise this back to 70 once real modules exist under src/. __init__.py is
+# intentionally NOT omitted below while it's the only file in the package --
+# an all-omitted, otherwise-empty scaffold has nothing measurable to cover,
+# which makes coverage.xml never get written at all (breaking the CI
+# artifact-upload step) regardless of fail_under. Re-add it to omit once
+# real modules land and __init__.py goes back to being pure boilerplate.
+fail_under = 0
+show_missing = true
+skip_covered = false
+omit = [
+  "src/*/__main__.py",
+]
+exclude_also = [
+  "pragma: no cover",
+  "if TYPE_CHECKING:",
+  "if __name__ == .__main__.:",
+  "raise NotImplementedError",
+]
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.10"
+mypy_path = "src"
+files = ["src", "tests"]
+strict = false
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+no_implicit_optional = true
